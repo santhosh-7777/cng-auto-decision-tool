@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CNG Auto Helper — Parimal Debnath (NIT Agartala – Motor Stand)</title>
+  <style>
+    :root {
+      --bg: #0f172a; --card: #1e293b; --border: #334155; --text: #f8fafc; --muted: #94a3b8; --accent: #facc15;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { margin: 0; padding: 14px; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; }
+    .app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 12px; }
+    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    header h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
+    header p { margin: 2px 0 0; font-size: 0.78rem; color: var(--muted); }
+    .btn-sm { background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-weight: 700; cursor: pointer; }
+    .banner { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.8rem; }
+    .banner span { color: var(--muted); display: block; font-size: 0.7rem; }
+    .card { border-radius: 14px; padding: 16px; border: 3px solid var(--border); background: var(--card); }
+    .card.green { background: #064e3b; border-color: #10b981; }
+    .card.blue { background: #1e3a8a; border-color: #3b82f6; }
+    .card.red { background: #7f1d1d; border-color: #ef4444; }
+    .pill { display: inline-block; padding: 3px 8px; border-radius: 99px; font-size: 0.7rem; font-weight: 800; background: rgba(0,0,0,0.35); }
+    .card h2 { margin: 6px 0; font-size: 1.8rem; font-weight: 900; }
+    .card p { margin: 0 0 12px; font-size: 0.94rem; line-height: 1.4; }
+    .math { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px; text-align: center; }
+    .math small { display: block; font-size: 0.68rem; color: #cbd5e1; }
+    .box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+    .label { font-size: 0.78rem; font-weight: 800; color: var(--muted); margin-bottom: 8px; display: flex; justify-content: space-between; }
+    .row-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .tap { min-height: 58px; border-radius: 10px; border: 2px solid var(--border); background: #0f172a; color: var(--text); font-size: 1.25rem; font-weight: 900; cursor: pointer; }
+    .tap small { display: block; font-size: 0.65rem; font-weight: 600; color: var(--muted); }
+    .tap.active { background: var(--accent); border-color: var(--accent); color: #0f172a; }
+    .tap.active small { color: #1e293b; }
+    select { width: 100%; min-height: 44px; border-radius: 8px; border: 2px solid var(--border); background: #0f172a; color: var(--text); font-weight: 700; padding: 0 10px; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div>
+        <h1>CNG Auto Decision Helper</h1>
+        <p>Parimal Debnath &bull; NIT Agartala &harr; Motor Stand</p>
+      </div>
+      <button class="btn-sm" id="reloadBtn" type="button">Reload CSV</button>
+    </header>
+
+    <section class="banner">
+      <div><span>CSV Rows Loaded</span><strong id="sRows">--</strong></div>
+      <div><span>Peak vs Off-Peak Rate</span><strong id="sRates">--</strong></div>
+      <div><span>Avg Gap / Fare</span><strong id="sGapFare">--</strong></div>
+      <div><span>Avg Stand Wait</span><strong id="sWait">--</strong></div>
+    </section>
+
+    <section class="card" id="card">
+      <span class="pill" id="badge">LOADING</span>
+      <h2 id="action">--</h2>
+      <p id="explain">Select passengers and CNG gauge below.</p>
+      <div class="math">
+        <div><small>Est. Extra Wait</small><strong id="mWait">--</strong></div>
+        <div><small>Extra Seat Fare</small><strong id="mGain">--</strong></div>
+        <div><small>Idle / Queue Cost</small><strong id="mCost">--</strong></div>
+      </div>
+    </section>
+
+    <section class="box">
+      <div class="label"><span>1. Passengers Seated Now</span><span>5-Seat Auto</span></div>
+      <div class="row-5" id="paxRow">
+        <button type="button" class="tap" data-v="1">1<small>seat</small></button>
+        <button type="button" class="tap" data-v="2">2<small>seats</small></button>
+        <button type="button" class="tap active" data-v="3">3<small>seats</small></button>
+        <button type="button" class="tap" data-v="4">4<small>seats</small></button>
+        <button type="button" class="tap" data-v="5">5<small>FULL</small></button>
+      </div>
+    </section>
+
+    <section class="box">
+      <div class="label"><span>2. CNG Tank Level</span><span>Safe: Half+</span></div>
+      <div class="row-3" id="cngRow">
+        <button type="button" class="tap" data-v="Low">LOW<small>Refill</small></button>
+        <button type="button" class="tap active" data-v="Half">HALF<small>Safe</small></button>
+        <button type="button" class="tap" data-v="Full">FULL<small>Ready</small></button>
+      </div>
+    </section>
+
+    <section class="box">
+      <div class="label"><span>3. Time Override (Demo / Testing)</span><span id="hLabel">Live</span></div>
+      <select id="hourSel"><option value="">Use Live System Clock</option></select>
+    </section>
+  </main>
+
+  <script>
+    const state = { passengers: 3, cng: "Half", hour: "" };
+    const hourSel = document.getElementById("hourSel");
+    for (let h = 0; h < 24; h++) {
+      const o = document.createElement("option");
+      o.value = h;
+      o.textContent = `${String(h).padStart(2, "0")}:00 ${h >= 16 && h < 20 ? "(Evening Rush)" : ""}`;
+      hourSel.appendChild(o);
+    }
+
+    async function update() {
+      const q = new URLSearchParams({ passengers: state.passengers, cng: state.cng });
+      if (state.hour !== "") q.set("hour", state.hour);
+      const res = await fetch(`/api/decision?${q}`);
+      const data = await res.json();
+      const { metrics: m, decision: d, hour } = data;
+
+      document.getElementById("sRows").textContent = `${m.valid} valid | ${m.skipped} skipped`;
+      document.getElementById("sRates").textContent = `₹${m.peak_rate.toFixed(0)}/hr vs ₹${m.offpeak_rate.toFixed(0)}/hr`;
+      document.getElementById("sGapFare").textContent = `${m.avg_gap} min | ₹${m.avg_fare.toFixed(0)}/pax`;
+      document.getElementById("sWait").textContent = `${m.avg_wait} min`;
+      document.getElementById("hLabel").textContent = `${String(hour).padStart(2, "0")}:00`;
+
+      const card = document.getElementById("card");
+      card.className = `card ${d.color}`;
+      document.getElementById("badge").textContent = `${d.is_peak ? "EVENING RUSH" : "OFF-PEAK"} • ${String(hour).padStart(2, "0")}:00`;
+      document.getElementById("action").textContent = d.action;
+      document.getElementById("explain").textContent = d.explanation;
+      document.getElementById("mWait").textContent = `${d.wait_est} min`;
+      document.getElementById("mGain").textContent = `+₹${d.extra_fare.toFixed(0)}`;
+      document.getElementById("mCost").textContent = `₹${d.idle_cost.toFixed(1)}`;
+    }
+
+    document.querySelectorAll("#paxRow .tap").forEach(b => b.onclick = () => {
+      document.querySelectorAll("#paxRow .tap").forEach(x => x.classList.remove("active"));
+      b.classList.add("active"); state.passengers = b.dataset.v; update();
+    });
+    document.querySelectorAll("#cngRow .tap").forEach(b => b.onclick = () => {
+      document.querySelectorAll("#cngRow .tap").forEach(x => x.classList.remove("active"));
+      b.classList.add("active"); state.cng = b.dataset.v; update();
+    });
+    hourSel.onchange = () => { state.hour = hourSel.value; update(); };
+    document.getElementById("reloadBtn").onclick = update;
+    update();
+  </script>
+</body>
+</html>
