@@ -1,0 +1,23 @@
+trip_id,date,arrival_time,departure_time,passengers_boarded,fare_per_passenger_inr,cng_level,refill_queued_mins,notes
+T001,2026-11-19,08:11:19,08:18:42,5,30,Full,0,Morning students and staff boarding at NIT Agartala Main Gate toward Motor Stand
+T002,2026-11-19,08:54:07,09:00:51,5,30,Full,0,Full 5-seat load heading via Jirania and Khayerpur to Motor Stand
+T003,2026-11-19,09:42:33,09:51:18,5,30,Half,0,Morning office commuters; 5th rider arrived after 8m45s
+T004,2026-11-19,10:31:14,10:44:29,4,30,Half,0,Mid-morning lull at NIT Gate; Parimal Debnath rolled with 4 riders after 13m15s
+T005,2026-11-19,11:22:48,11:36:10,4,30,Half,11,Off-peak CNG refill at Jirania TNGCL pump along NH-8; short 11 min queue
+T006,2026-11-19,12:19:05,12:33:47,3,30,Full,0,Afternoon class hours; slow passenger flow so left with 3 riders
+T007,2026-11-19,13:14:52,13:26:19,5,30,Full,0,Group of 4 hostel students plus 1 local rider filled all 5 seats
+T008,2026-11-19,14:18:36,14:32:41,4,30,Half,0,Slow midday stand wait; 5th seat stayed empty past 14 mins
+T009,2026-11-19,15:12:09,15:21:54,5,30,Half,12,Pre-rush CNG top-up before 4 PM wave; 12 min queue at CNG station
+T010,2026-11-19,16:06:23,16:12:48,5,30,Full,0,Evening rush start at Motor Stand return bay; 5 seats filled in 6m25s
+T011,2026-11-19,16:49:11,16:55:34,5,30,Full,0,Heavy evening return wave from Motor Stand toward NIT Agartala
+T012,2026-11-19,17:28:40,17:34:52,5,30,Half,0,Peak rush boarding; all 5 seats filled in 6m12s
+T013,2026-11-19,18:14:17,18:20:49,5,30,Half,0,Fast turnaround at Motor Stand; zero slack time
+T014,2026-11-19,18:56:03,19:02:41,5,35,Half,0,Evening return trip with ₹35 late-evening fare
+T015,2026-11-19,19:38:29,19:46:12,5,30,Low,34,Entered rush on Low CNG; trapped 34 mins in shift-change pump queue
+T016,2026-11-19,20:21:44,20:34:18,4,35,Full,0,Post-8 PM taper; departed Motor Stand with 4 passengers
+T017,2026-11-20,08:47:15,08:54:09,5,30,Full,0,Day 2 morning commuter wave from NIT Agartala Main Gate
+T018,2026-11-20,11:39:51,11:53:27,3,30,Half,0,Late morning lull; departed early with 3 riders to protect hourly turnover
+T019,2026-11-20,14:44:18,14:53:46,5,30,Low,10,Refilled at 2:50 PM off-peak; 10 min wait saved ~24 mins vs rush queue
+T020,2026-11-20,16:33:09,16:39:41,5,30,Full,0,Evening rush boarding at Motor Stand bay
+T021,2026-11-20,17:52:26,17:58:58,5,30,Half,30,Evening CNG pump queue observed at 30 mins during driver shift change
+T022,2026-11-20,19:19:42,19:27:15,5,30,Half,0,Final evening rush wave back to NIT Agartala
