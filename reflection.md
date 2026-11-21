@@ -1,0 +1,10 @@
+# Project Reflection — CNG Share-Auto Decision Tool
+
+## What I Got Wrong at the Start
+When I started this project, I assumed the biggest bottleneck for Parimal Debnath on the NIT Agartala–Motor Stand route was simply guessing when the 4th or 5th passenger would show up. I initially designed the logic around a 4-seat auto and treated passenger arrival gaps as the only variable that mattered. Talking to Parimal Debnath at the stand flipped that assumption completely: he operates a 5-seat share-auto, and his single biggest daily loss isn't leaving with one empty seat—it is entering the 4:00 PM rush with a Low CNG gauge and getting trapped in a 30-minute shift-change queue at the TNGCL pump on NH-8. That conversation forced me to rewrite the core priority rule so `REFILL CNG NOW` overrides seat-waiting math whenever CNG drops below Half.
+
+## What I Would Cut
+If I rebuilt this from scratch, I would cut the `skipped` row counter in the live stats banner and simplify the 24-hour dropdown into three quick preset buttons (`Morning`, `Afternoon`, `Evening Rush`). During testing, the 24-hour dropdown required extra scrolling on a phone screen, whereas a driver—or someone demoing the app on mobile—only cares about testing rush hour versus off-peak lulls. Keeping the UI strictly to big thumb-friendly buttons without dropdowns would make it cleaner and closer to zero-friction field use.
+
+## Where AI Helped and Where It Wasted Time
+AI was genuinely useful for structuring the boilerplate `http.server` routing, generating the mobile-first CSS grid layout without external frameworks, and sanity-checking the opportunity-cost math against Little's Law ($L = \lambda W$). Where it wasted time was over-engineering early drafts of `app.py` with verbose error wrappers, extra helper functions, and wrong route assumptions (4 seats instead of 5, and generic Agartala stand names instead of the actual NIT Agartala Main Gate–Motor Stand corridor). I had to strip `app.py` down to ~145 lines of flat, readable functions so I could explain every line cleanly and modify thresholds live during review.
